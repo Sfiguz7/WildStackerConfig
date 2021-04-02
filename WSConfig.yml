@@ -1,492 +1,950 @@
-#--------------------------------------------------------------------#
-#                   ClearLag Configuration File                      #
-#--------------------------------------------------------------------#
-# Configure to your liking, reload the config by tying: /lagg reload #
-#                                -                                   #
-#  Here is a helpful tutorial on this configuration setup! (Updated) #
-# http://dev.bukkit.org/bukkit-plugins/clearlagg/pages/config-setup/ #
-#--------------------------------------------------------------------#
-#          All possible mob names: https://goo.gl/cch8YK             #
-#--------------------------------------------------------------------#
-config-version: 20
+###############################################
+##                                           ##
+##         WildStacker Configuration         ##
+##            Developed by Ome_R             ##
+##                                           ##
+###############################################
 
-# -- 'use-internal-tps' Should clearlag just use the calculated internal TPS? (Improves accuracy)
-# -- 'language' Clearlag supports multiple languages (https://github.com/bob7l/Clearlag-Languages) translated by the community
-# -- 'use-internal-tps' Should Clearlag use Spigot's /tps? (Updated by minutes, much slower, but more accurate!)
-settings:
-  language: English
-  auto-update: true
-  enable-api: true
-  use-internal-tps: true
+# How should the item that is given to players by the give command be called?
+# {0} represents stack size
+# {1} represents entity/block type
+# {2} represents item type (Egg / Spawner / Barrel)
+give-item-name: '&6x{0} &f&o{1} {2}'
 
-#Controls ALL of Clearlag's broadcasting. Disabling this will disable ALL broadcasting on Clearlag
-# -- 'enabled' Should clearlag broadcast messages at all? (Example: Auto-removal, warnings, ect)
-# -- 'async' Should messages be broadcasted on another thread
-# -- 'use-permission-for-broadcasts' Should clearlag use permissions?
-# -- 'permission' What is the permission? (By default, it's bukkit's default)
-global-broadcasts:
-  enabled: true
-  async: false
-  use-permission-for-broadcasts: false
-  permission: bukkit.broadcast
+# The inspect tool of the plugin.
+# When clicking an item, entity, barrel or spawner, all the information
+# about the object will be displayed to the player.
+inspect-tool:
+  type: ARROW
+  name: '&6Inspect Tool'
+  lore:
+  - '&7Click on an object to get more details about it.'
 
-#Monitors your server's main thread for locking/freezing. Helps figure out what's causing lag-spikes
-# NOTE: This will outprint mostly just stacktraces. It's up to YOU to interpret the stacktrace
-# NOTE: (!Important!) Clearlag will print EVERYTHING to your Spigot/Bukkit server logs!
-# NOTE: A large 'Garbage collection time' generally means the spike was caused by the Garbage collector (Memory issue basically..)
-# -- 'enabled' Should this be enabled (Prints data to your logs, not ingame chat)
-# -- 'min-elapsed-time' How long (IN MILLISECONDS) of a server-tick constitutes a freeze/lock? I don't recommend going under ~80
-# -- 'check-interval' How often (IN MILLISECONDS) should the server be checked? Lower the number, more accurate the timings
-# -- 'follow-stack' Should Clearlag keep printing the stacktrace every time it changes (Can be very spammy)?
-# Help-> https://dev.bukkit.org/projects/clearlagg/pages/finding-the-cause-of-lag-spikes
-lag-spike-helper:
-  enabled: false
-  min-elapsed-time: 500
-  check-interval: 100
-  follow-stack: true
+# The simulate tool of the plugin.
+# You can check if two objects can stack together using this tool.
+simulate-tool:
+  type: ARROW
+  name: '&6Simulate Tool'
+  lore:
+  - '&7Click on two objects to check if they can stack together.'
 
-#Limits the amount of item transfers for all the hoppers in a single chunk
-# -- 'transfer-limit' How many transfers per check interval until the hopper should be disabled
-# -- 'check-interval' In seconds, on what interval should the transfer limit be reset
-hopper-limiter:
-  enabled: false
-  transfer-limit: 5
-  check-interval: 1
+# Settings related to database.
+database:
+  # Should data of worlds that no longer exist be deleted?
+  delete-invalid-worlds: false
 
-#Meters your ram usage. If it goes above 'limit', run 'commands:'
-# NOTE: It's perfectly normal for your server to be using a lot of memory. The JVM's garbage collector will automatically free memory.
-# NOTE: Only use this if you have very little memory that can't support the server
-# -- 'ram-limit' is in MB, do not set it exactly to your max allocated ram amount
-# -- 'interval' is how often clearlag will check your ram usage
-# -- 'commands' lists the commands that will be ran upon hitting your ram-limit
-ram-meter:
-  enabled: false
-  interval: 20
-  ram-limit: 5000
-  commands:
-    - 'lagg killmobs'
-    - 'lagg clear'
-
-#Configure what the '/lagg halt' command does
-# -- 'remove-entities' remove entities such as items, primed-tnt, and mobs
-# -- 'disable-natural-entity-spawning' disables the server's natural world spawning
-# -- 'halted' this section defines which actions should be halted during '/lagg halt'
-halt-command:
-  remove-entities: true
-  disable-natural-entity-spawning: true
-  halted:
-    fire: true
-    fire-burn: true
-    explosion: true
-    decay: true
-    block-fade: true
-    block-form: true
-    block-spread: true
-    block-natural-change: true
-
-#This limits how fast a user can move by walking or flying in a single tick (20 ticks a second)
-#I HIGHLY recommend you use this on servers with increased player-speed/fly to prevent chunk overload
-#You may also use Spigot's internal speed limiters to achieve the same goal if present on your version (better performance)
-# -- 'move-max-speed' Max speed on foot
-# -- 'fly-max-speed'  Max speed while flying
-player-speed-limiter:
-  enabled: false
-  move-max-speed: 0.7
-  fly-max-speed: 0.8
-
-#Set the age of specific items when they're first spawned so they naturally despawn faster, or slower then others
-#Recommended for servers with a lot of item-entities consisting mostly of useless items (Such as stone)
-#Material list: https://hub.spigotmc.org/javadocs/spigot/org/bukkit/Material.html
-# -- 'items' Lists the material names of the entities with their spawn-age (In seconds)
-item-spawn-age-setter:
-  enabled: false
-  items:
-    stone: 240
-    grass: 240
-    cobblestone: 240
-    log: 240
-    stone_axe: 240
-    stone_pickaxe: 240
-    stone_sword: 240
-    wooden_axe: 240
-    wooden_pickaxe: 240
-    wooden_sword: 240
-    rotten_flesh: 240
-    gravel: 240
-    dirt: 240
-    leather: 200
-    sand: 240
-    bone: 240
-    beef: 240
-    chicken: 160
-    rabbit: 240
-    salmon: 240
-    cactus: 210
-    wool: 180
-    arrow: 160
-    PORKCHOP: 240
-    potato: 240
-    RED_TULIP: 240
-
-#Should mobs be nerfed to prevent over-breeding to reduce CPU usage (And possibly raise TPS)
-#When mobs are stuck too close, collisions are extremely intensive putting a pretty mean load on the server
-# -- 'max-mobs' means how many bably/adult animals are allowed within the 'check-radius'
-# -- 'check-radius' is the radius of what clearlag will check for 'max-mobs'
-mob-breeding-limiter:
-  enabled: true
-  max-mobs: 30
-  check-radius: 10
-
-#Should clearlag purge logs under /logs when the server starts?
-# -- 'days-old' means how many days old can the log be to be deleted
-log-purger:
-  enabled: false
-  days-old: 3
-
-#What type of entities SHOULD NOT be removed while doing /lagg area?
-area-filter:
-  - Itemframe
-  - Minecart
-  - Wolf
-  - Villager
-  - Horse
-  - ARMOR_STAND
-
-#Should clearlag reset the config, or attempt to update your config on updates
-# -- 'force-update' is whether or not clearlag will reset your config with a newer version
-# -- settings this to false will make clearlag update your config rather then resetting
-config-updater:
-  force-update: false
-
-#This limits the mob egg spawners so players cannot "overload" the server with them
-# -- 'check-radius' is the radius clearlag will check for nearby entities
-# -- 'max-mobs' is how many entities may be in the radius before the spawning is blocked
-mobegg-limiter:
-  enabled: false
-  check-radius: 8
-  max-mobs: 5
-
-#Disable new chunk generation, or just put a cap on how many can load at once.
-#May cause many bugs with Spigot 1.8+, not recommended!
-# -- 'create-new-chunks' disables or enables chunk creation. false would disallow new chunks
-# -- !UNSTABLE ON SPIGOT BUILDS!
-chunk-limiter:
-  enabled: false
-  limit: 6000
-  create-new-chunks: true
-
-#This modifies the view range of entities
-# -- Lower it is, the better your entity tick will be and the more CPU cycles you'll save
-# -- If it's too high, expect bugs / lots of lag
-mob-range:
-  enabled: false
-  zombie: 30
-  skeleton: 30
-  creeper: 20
-
-#How long should items/Mobs be left on the ground
-# -- live-time's go by ticks (20 ticks a second)
-live-time:
-  enabled: false
-  interval: 10
-  mobtimer: true
-  itemtimer: true
-  arrowtimer: true
-  arrowkilltime: 15
-  moblivetime: 600
-  itemlivetime: 240
-
-#This option disallows the placement of too many tnt-minecarts
-# -- 'radius' is the radius clearlag will check for TNT-Minecarts
-tnt-minecart:
-  enabled: false
-  max: 2
-  radius: 6
-
-#This option reduces global dispenser fire rate
-# -- 'time' is in milliseconds
-dispenser-reducer:
-  enabled: false
-  time: 100
-
-#This option reduces the explosions of mass amounts of tnt, and reduces tnt lag
-# -- 'check-radius' is the radius clearlag will check for primed TNT
-# -- 'max-primed' is the max primed TNT within the radius allowed before clearlag begins to remove
-tnt-reducer:
-  enabled: false
-  check-radius: 5
-  max-primed: 3
-
-#This option reduces fire spread rate
-# -- 'time' is in milliseconds
-firespread-reducer:
-  enabled: false
-  time: 2000
-
-#How many entities should one chunk be allowed to hold?
-# -- 'entities' lists all the entities that will be counted
-#     and possibly removed.
-chunk-entity-limiter:
-  enabled: false
-  limit: 10
-  entities:
-    - Squid
-    - Zombie
-    - Skeleton
-    - Creeper
-    - Chicken
-    - Pig
-    - Sheep
-    - Cow
-    - Horse
-  # - Pig liveTime=100 <- This mob will be REMOVED if it's been alive for 100 ticks (5 seconds)
-
-#A per-entity chunk limiter. Very useful to limiting useless mobs like squid, but not zombies
-# -- 'entity-limits' lists all the entities, their filters, and 'limit' to specify their limit
-#    to be removed/culled
-# -- 'passive-purger' Enables random checking of chunks to see whether they're exceeding limits.
-# -- Useful for when you want to prevent lag exploiting
-# -- 'passive-cleaning-enabled' Enables the passive-purger
-# -- 'check-interval' How often (in ticks, 50MS) should chunks be checked
-# -- 'chunk-batch-size' How many chunks at once should be checked
-per-entity-chunk-entity-limiter:
-  enabled: false
-  entity-limits:
-    - Squid limit:1
-    - Zombie limit:2
-    - Skeleton limit:2
-    - Creeper limit:2
-    - Chicken limit:3
-    - Pig limit:5
-    - Sheep limit:5
-    - Cow limit:5
-    - Horse limit:3 !hasName
-    - Villager limit:4
-    - Arrow limit:4 inGround
-    - Rabbit limit:2
-    - PufferFish limit:2
-    - Silverfish limit:2
-    - TROPICAL_FISH limit:2
-    - COD limit:2
-    - DOLPHIN limit:2
-    - Bat limit:1
-  passive-cleaner:
-    passive-cleaning-enabled: false
-    check-interval: 20
-    chunk-batch-size: 100
-
-#How many mobs should be allowed to spawn globally
-# -- 'interval' is the check interval check the current spawn amounts
-spawn-limiter:
-  enabled: false
-  interval: 15
-  mobs: 300
-  animals: 300
-
-#Meters your TPS, if it goes to low, run the commands you wrote below!
-# -- 'interval' is how often tps-meter will check the TPS
-# -- 'tps-trigger' is at what TPS the commands will be ran at
-# -- 'tps-recover' is at what TPS should the TPS be considered stable after 'tps-trigger' is executed
-# -- 'commands' lists what commands will be executed when tps-tigger is reached
-# -- 'recover-commands' lists what commands will be executed when tps-recover is reached
-# -- 'trigger-broadcast-message' specifies which message should be broadcasted when tps-trigger runs
-# -- 'recover-broadcast-message' specifies which message should be broadcasted when TPS recovers
-# -- 'broadcast-enabled' defines whether or not tps-meter should broadcast
-tps-meter:
-  enabled: false
-  trigger-broadcast-message: '&6[ClearLag] &cThe server is overloaded, executing lag-perventing measures'
-  recover-broadcast-message: '&6[ClearLag] &aThe server is no longer overloaded!'
-  broadcast-enabled: false
-  interval: 15
-  tps-trigger: 14.0
-  tps-recover: 19.0
-  commands:
-    - 'lagg killmobs'
-    - 'lagg clear'
-    - 'lagg halt on'
-  recover-commands:
-    - 'lagg halt off'
-
-#This is /lagg killmobs, put what you DON'T want removed!
-# -- 'remove-named', when FALSE entities with custom names will NOT be removed
-# -- 'mob-filter' lists which mobs will be IGNORED during /lagg killmobs
-kill-mobs:
-  remove-named: false
-  mob-filter:
-    - Villager
-    - Wolf
+# Settings related to the automatic kill all
+kill-task:
+  # How much time should be passed between auto-killing? (in seconds)
+  # If you wish to disable the auto-killing task, set the interval to 0.
+  interval: 1200
+  # Should the kill task remove stacked entities?
+  stacked-entities: true
+  # Should the kill task remove unstacked entities?
+  unstacked-entities: false
+  # Should the kill task remove stacked items?
+  stacked-items: true
+  # Should the kill task remove unstacked items?
+  unstacked-items: true
+  # When enabled, the plugin will remove all stacked-entities when clearlagg removes items & entities.
+  # This feature will work if the interval is set to 0 - these are two different features!
+  sync-clear-lagg: false
+  # All settings related to the kill-all task of entities.
+  kill-entities:
+    # A list of entities that will be cleared.
+    # EntityType list: https://bg-software.com/entities/
+    # SpawnReason list: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/event/entity/CreatureSpawnEvent.SpawnReason.html
+    # You can combine both filters using "ENTITY_TYPE:SPAWN_REASON"
+    # If you want all entities to be killed, set this to []
+    whitelist: []
+    # A list of entities that won't be cleared.
+    # EntityType list: https://bg-software.com/entities/
+    # SpawnReason list: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/event/entity/CreatureSpawnEvent.SpawnReason.html
+    # You can combine both filters using "ENTITY_TYPE:SPAWN_REASON"
+    # If you wish to disable blacklisted entities, use "blacklist: []"
+    blacklist:
+    - BOAT
+    - CAT
+    - DONKEY
+    - ENDER_DRAGON
+    - HORSE
+    - LLAMA
+    - MULE
+    - PARROT
+    - FOX
+    - OCELOT
+    - WOLF
+    - MINECART
+    - VILLAGER
     - ARMOR_STAND
-    - Horse
-#  - Pig !name="Test" <- This entity will filtered if the name does NOT equal "Test"
-#  - Zombie hasName <- This entity will be filtered if it HAS a name
-
-#This nerfs mob-spawners (Natural and player-made)
-#-------------------------------------------------
-#This goes by chunks rather then spawners. This is to prevent
-#a large buildup of mob-spawners within a small region to "bypass"
-#your set limit. It also allows for keys to be generated more easily
-#increasing the performance
-# -- 'max-spawn' is the maximum mobs allowed to spawn by a mob-spawner
-# -- 'remove-mobs-on-chunk-unload' is whether or not Clearlag should remove
-# --  the mobs spawned by the mobspawner upon chunk unload (Highly Recommended)
-mobspawner:
-  enabled: false
-  max-spawn: 4
-  remove-mobs-on-chunk-unload: true
-
-#Dont use if you have CB++ or Spigot!
-item-merger:
-  enabled: false
-  radius: 6
-
-#Auto-removal options
-# -- warnings works like this; time = the time warning should be given, msg = warning message at that time
-# -- NOTE: The below 'remove' section applies to this remover!
-# -- NOTE: Putting the interval to low will cause issues!
-# -- NOTE: To disable "warnings", set it to "warnings: []"
-# -- NOTE: bukkit.broadcast.user permission will allow users to see broadcasts (If not enabled by default)
-#
-#        !==[ All string values MUST be inside '']==!
-#
-# -- 'remove-entities' lists what entities should be REMOVED on removal
-# -- 'warnings' list warnings to be given out at specified times
-# -- 'item-filter' What ground-items should NOT be removed during removal
-# -- 'remove-entities' What entities SHOULD be removed during removal
-auto-removal:
-  enabled: false
-  broadcast-message: '&6[ClearLag] &aRemoved +RemoveAmount Entities!'
-  broadcast-removal: true
-  autoremoval-interval: 460
-  world-filter:
-  # - this_world <-This world will be ignored during removal!
-  boat: false
-  falling-block: true
-  experience-orb: true
-  painting: false
-  projectile: false
-  item: true
-  itemframe: false
-  minecart: false
-  primed-tnt: true
-  item-filter:
-  # - Stone <-This item-id will be ignored during removal!
-  # - Grass
-  remove-entities:
-    - Arrow onGround
-    - Snowball
-    - Egg
-    - Fireball
-    - Boat !isMounted
-    - Minecart !isMounted
+    - SHULKER_BULLET
+    - SHULKER
+    - POLAR_BEAR
+    - ITEM_FRAME
+    - MINECART_FURNACE
     - MINECART_TNT
-  # - cow <- This mob-type will be REMOVED during removal!
-  # - MINECART_MOB_SPAWNER
-  # - Pig liveTime=100 <- This mob will be REMOVED if it's been alive for 100 ticks (5 seconds)
-  # - Minecart !isMounted <- This entity will be REMOVED if it's NOT mounted
-  # - Wolf !hasName <- This entity will be REMOVED if it doesn't have a name
-  warnings:
-    - 'time:400 msg:&4[ClearLag] &cWarning Ground items will be removed in &7+remaining &cseconds!'
-    - 'time:440 msg:&4[ClearLag] &cWarning Ground items will be removed in &7+remaining &cseconds!'
+    - PAINTING
+    - IRON_GOLEM
+    - PILLAGER
+    - MINECART_CHEST
+    # A list of worlds that entities will be cleared inside.
+    # If you want all worlds, set this to []
+    worlds:
+    - world_nether
+    - world_the_end
+    - resource_world
+    - core_world
+  # All settings related to the kill-all task of entities.
+  kill-items:
+    # A list of items that will be cleared.
+    # Material list: https://bg-software.com/materials/
+    # If you want all items to be killed, set this to []
+    whitelist: []
+    # A list of items that won't be cleared.
+    # Material list: https://bg-software.com/materials/
+    # If you wish to disable blacklisted items, use "blacklist: []"
+    blacklist: []
+    # A list of worlds that items will be cleared inside.
+    # If you want all worlds, set this to []
+    worlds: []
 
-#What should be removed during /lagg clear, nearly the same thing as auto-removal
-command-remove:
-  world-filter:
-  # - this_world <-This world will be ignored during removal!
-  broadcast-removal: false
-  boat: true
-  falling-block: true
-  experience-orb: true
-  painting: false
-  projectile: true
-  item: true
-  itemframe: false
-  minecart: true
-  primed-tnt: true
-  item-filter:
-  # - Stone <-This item-id will be ignored during removal!
-  # - Grass
-  remove-entities:
-  # - cow <- This mob-type will be REMOVED during removal!
-  # - MINECART_MOB_SPAWNER
-  # - Pig liveTime=100 <- This mob will be REMOVED if it's been alive for 100 ticks (5 seconds)
-  # - Minecart !isMounted <- This entity will be REMOVED if it's NOT mounted
-  # - Wolf !hasName <- This entity will be REMOVED if it doesn't have a name
+# Here you can configurable all features related to stacked items.
+items:
+  # Should items get stacked on the server?
+  enabled: true
 
-#Very very old, but still works. Just specifies a global entity limit. I'd recommend 'custom-trigger-removal' instead
-# -- 'max' max entities allowed before the entity removal is activated
-limit:
+  # How many blocks from the item should be checked for other items to stack into?
+  # Material list: https://bg-software.com/materials/
+  # Make sure you follow the "TYPE" and "TYPE:DATA" formats.
+  merge-radius:
+    all: 5
+
+  # Custom display-name for the items on ground.
+  # If you don't want a display-name, use "custom-name: ''"
+  # {0} represents stack amount
+  # {1} represents display name
+  # {2} represents display name in upper case
+  custom-name: '&6x{0} &f&o{1}'
+
+  # Blacklisted items are items that won't get stacked.
+  # Material list: https://bg-software.com/materials/
+  # Make sure you follow the "TYPE" and "TYPE:DATA" formats.
+  # If you wish to disable blacklisted items, use "blacklist: []"
+  blacklist:
+  - CHAINMAIL_HELMET
+  - IRON_HELMET
+  - DIAMOND_HELMET
+  - GOLDEN_HELMET
+  - NETHERITE_HELMET
+  - TURTLE_HELMET
+  - BOW
+  - WOODEN_SWORD
+  - STONE_SWORD
+  - GOLDEN_SWORD
+  - IRON_SWORD
+  - DIAMOND_SWORD
+  - NETHERITE_SWORD
+  - LEATHER_HELMET
+  - LEATHER_CHESTPLATE
+  - LEATHER_LEGGINGS
+  - LEATHER_BOOTS
+  - CHAINMAIL_CHESTPLATE
+  - CHAINMAIL_LEGGINGS
+  - CHAINMAIL_BOOTS
+  - IRON_CHESTPLATE
+  - IRON_LEGGINGS
+  - IRON_BOOTS
+  - DIAMOND_CHESTPLATE
+  - DIAMOND_LEGGINGS
+  - DIAMOND_BOOTS
+  - GOLDEN_CHESTPLATE
+  - GOLDEN_LEGGINGS
+  - GOLDEN_BOOTS
+  - NETHERITE_CHESTPLATE
+  - NETHERITE_LEGGINGS
+  - NETHERITE_BOOTS
+  - TRIDENT
+  - CROSSBOW
+  - TOTEM_OF_UNDYING
+
+  # Whitelisted items are items that will get stacked.
+  # Material list: https://bg-software.com/materials/
+  # Make sure you follow the "TYPE" and "TYPE:DATA" formats.
+  # If you wish to disable whitelisted items, use "whitelist: []"
+  whitelist: []
+
+  # Set a maximum stack for specific items.
+  # Make sure you follow the "TYPE" and "TYPE:DATA" formats.
+  # You can use 'all' as a global limit (all: 20 will set all items to be limited to 20 per stack)
+  # If you don't want any limits, you can set a random type.
+  limits:
+    EXAMPLE_ITEM: 1024
+
+  # A list of worlds items won't get stacked inside them (case-sensitive)
+  disabled-worlds:
+  - Games
+
+  # Set a maximum amount of item objects in a chunk.
+  # If you want to disable the feature, set it to 0.
+  chunk-limit: 0
+
+  # Should particles be spawned when an entity gets stacked?
+  # If you want to edit the particles, check the particles file.
+  particles: false
+
+  # When enabled, all items will have a custom name (even if not stacked)
+  unstacked-custom-name: false
+
+  # When fix-stack is disabled, items with a max-stack of 1 will be added to inventories
+  # with a max-stack size of 64. If a player picks up 80 picks, he will get 64 + 16, instead
+  # of 80 different items.
+  fix-stack: false
+
+  # When item-display is enabled, the item's name will be displayed instead of it's type
+  # This will take place on all items, and can only be overridden by custom-display section.
+  item-display: false
+
+  # Should players be able to disable item names for themselves?
+  # In order to work, ProtocolLib should be installed.
+  names-toggle:
+    # Can item names be toggled?
+    enabled: false
+
+    # What the toggle command will be?
+    command: stacker names item
+
+  # When enabled, a pickup sound will be played to the player.
+  pickup-sound:
+    # Should pickup-sound be enabled for stacked items?
+    enabled: false
+
+    # The volume of the sound.
+    volume: 1.0
+
+    # The pitch of the volume.
+    pitch: 1.0
+
+  # Should items with the max pickup delay get stacked (items that shouldn't be picked up in first place)
+  max-pickup-delay: false
+
+  # How much time should be passed between auto-stacking? (in ticks)
+  # If you wish to disable the auto-stacking task, set the stack-interval to 0.
+  # By default, all items are stacked once, when they spawn.
+  stack-interval: 0
+
+  # Should entities get stored into the database?
+  store-items: true
+
+# Here you can configurable all features related to stacked entities.
+entities:
+  # Should entities get stacked on the server?
+  enabled: true
+
+  # How many blocks from the entity should be checked for other entities to stack into?
+  # EntityType list: https://bg-software.com/entities/
+  # SpawnReason list: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/event/entity/CreatureSpawnEvent.SpawnReason.html
+  # You can combine both filters using "ENTITY_TYPE:SPAWN_REASON"
+  merge-radius:
+    all: 8
+
+  # Custom display-name for the entities.
+  # If you don't want a display-name, use "custom-name: ''"
+  # {0} represents stack amount
+  # {1} represents entity type
+  # {2} represents entity type in upper case
+  # {3} represents the upgrade's display name
+  custom-name: '&6x{0} &f&o{1}'
+
+  # Blacklisted entities are entities that won't get stacked.
+  # EntityType list: https://bg-software.com/entities/
+  # SpawnReason list: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/event/entity/CreatureSpawnEvent.SpawnReason.html
+  # You can combine both filters using "ENTITY_TYPE:SPAWN_REASON"
+  # If you wish to disable blacklisted entities, use "blacklist: []"
+  blacklist:
+  - CAT
+  - DONKEY
+  - ENDER_DRAGON
+  - HORSE
+  - LLAMA
+  - MULE
+  - PARROT
+  - FOX
+  - OCELOT
+  - WOLF
+  - RABBIT
+  - VILLAGER
+  - BEE
+  - ZOMBIE_VILLAGER
+
+  # Whitelisted entities are entities that will get stacked.
+  # EntityType list: https://bg-software.com/entities/
+  # SpawnReason list: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/event/entity/CreatureSpawnEvent.SpawnReason.html
+  # You can combine both filters using "ENTITY_TYPE:SPAWN_REASON"
+  # If you wish to disable whitelisted entities, use "whitelist: []"
+  whitelist: []
+
+  # Set a maximum stack for specific entities.
+  # Make sure you follow the "ENTITY-TYPE" format.
+  # You can use 'all' as a global limit (all: 20 will set all entities to be limited to 20 per stack)
+  # If you don't want any limits, you can set a random type.
+  limits:
+    EXAMPLE_ENTITY: 10
+
+  # Set a minimum required entities to stack for specific entities.
+  # Make sure you follow the "ENTITY-TYPE" format.
+  # You can use 'all' as a global limit (all: 20 will set all entities to must have at least 20 entities around before stacking)
+  # If you don't want any limits, you can set a random type.
+  minimum-required:
+    EXAMPLE_ENTITY: 10
+
+  # A list of worlds entities won't get stacked inside them (case-sensitive)
+  disabled-worlds:
+  - Dungeon
+
+  # Set a maximum amount of entity objects in a chunk.
+  # If you want to disable the feature, set it to 0.
+  chunk-limit: 500
+
+  # Should particles be spawned when an entity gets stacked?
+  # If you want to edit the particles, check the particles file.
+  particles: false
+
+  # A list of WorldGuard regions entities won't get stacked inside them (case-sensitive)
+  disabled-regions: []
+
+  # Blacklisted names is a list of names that when an entity has this name, it won't get stacked.
+  # Color codes are supported, as well as regex.
+  # If you wish to enable stacking of all entities based on their name, use "name-blacklist: []"
+  name-blacklist: []
+
+  # How much time should be passed between auto-stacking? (in ticks)
+  # If you wish to disable the auto-stacking task, set the stack-interval to 0.
+  stack-interval: 0
+
+  # A list of all checks that the plugin does before trying to stack two entities together.
+  stack-checks:
+    AGE: true
+    ANIMAL_OWNER: true
+    BAT_AWAKE: false
+    CAN_BREED: true
+    CAT_COLLAR_COLOR: true
+    CAT_TYPE: true
+    ENDERMAN_CARRIED_BLOCK: true
+    EXACT_AGE: false
+    GUARDIAN_ELDER: true
+    HORSE_CARRYING_CHEST: true
+    HORSE_COLOR: true
+    HORSE_JUMP: true
+    HORSE_MAX_TAME_PROGRESS: true
+    HORSE_STYLE: true
+    HORSE_TAME_PROGRESS: true
+    HORSE_TYPE: true
+    IS_IN_LOVE: true
+    IS_TAMED: true
+    LLAMA_COLOR: true
+    LLAMA_STRENGTH: true
+    MOOSHROOM_TYPE: true
+    NAME_TAG: true
+    NERFED: true
+    OCELOT_TYPE: true
+    PARROT_TYPE: true
+    PHANTOM_SIZE: true
+    PIG_SADDLE: true
+    PUFFERFISH_STATE: true
+    RABBIT_TYPE: true
+    SHEEP_COLOR: true
+    SHEEP_SHEARED: true
+    SKELETON_TYPE: true
+    SLIME_SIZE: true
+    SPAWN_REASON: false
+    TROPICALFISH_BODY_COLOR: true
+    TROPICALFISH_TYPE: true
+    TROPICALFISH_TYPE_COLOR: true
+    UPGRADE: true
+    VILLAGER_PROFESSION: true
+    WOLF_ANGRY: false
+    WOLF_COLLAR_COLOR: true
+    ZOMBIE_BABY: true
+    ZOMBIE_PIGMAN_ANGRY: false
+
+  # A list of all actions that the plugin check before unstacking an entity stack.
+  stack-split:
+    BEE_AGRO: false
+    ENTITY_BREED: true
+    IRON_GOLEM_AGRO: false
+    MUSHROOM_SHEAR: true
+    NAME_TAG: true
+    PIGMAN_AGRO: false
+    SHEEP_DYE: true
+    SHEEP_SHEAR: true
+    VILLAGER_INFECTION: true
+    WOLF_AGRO: false
+
+  # Linked-entities are entities that are linked to one spawner or more.
+  # A spawner that has an entity linked to, will try to stack it's entities first to the linked one.
+  # Linked entities feature won't work if entities-stacking is disabled.
+  linked-entities:
+    # Should entities be linked to spawners?
+    enabled: true
+
+    # The maximum distance that the linked entity can be from the spawner.
+    # If the entity is too far, it will get unlinked automatically from the spawner.
+    max-distance: 10
+
+  # Instant-kill will kill the entire stack instead of unstack it by one.
+  # When an entire stack dies, their drops are getting multiplied.
+  # EntityType list: https://bg-software.com/entities/
+  # DamageCause list:  https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/event/entity/EntityDamageEvent.DamageCause.html
+  # You can combine both filters using "ENTITY_TYPE:DAMAGE_CAUSE" or "ENTITY_TYPE:SPAWN_REASON"
+  # If you don't want instant-kill, use "instant-kill: []"
+  instant-kill: 
+    - CONTACT
+    - ENTITY_ATTACK
+    - LAVA
+    - FIRE_TICK
+    - FIRE
+    - HOT_FLOOR
+
+  # Nerfed entities are entities that cannot attack / target other entities and players.
+  # EntityType list: https://bg-software.com/entities/
+  # SpawnReason list: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/event/entity/CreatureSpawnEvent.SpawnReason.html
+  # You can combine filters using "ENTITY_TYPE:SPAWN_REASON"
+  nerfed-entities:
+    # A list of entities that will be nerfed.
+    # If you want all entities to be nerfed, set this to [].
+    whitelist:
+    - EXAMPLE_MOB
+    # A list of entities that won't be nerfed.
+    blacklist: []
+    # A list of worlds that entities can be nerfed in.
+    # If you want entities to be nerfed inside all worlds, set this to [].
+    worlds: []
+    # Should nerfed entities be able to teleport?
+    teleport: false
+
+  # Stack-down is a feature that will force entities to stack to other entities that are below their y level.
+  # This feature is great for flying entities, like blazes and ghasts.
+  stack-down:
+    # Should the stack-down feature be enabled on the server?
+    enabled: true
+    # A list of entities that will be forced to only stack down.
+    # You can combine filters using "ENTITY_TYPE:SPAWN_REASON"
+    stack-down-types:
+    - BLAZE
+    - GHAST
+
+  # If a stacked entity dies from fire, should the fire continue to the next entity?
+  keep-fire: true
+
+  # If enabled, the placeholder '{}' will be replaced with the stack amount for mythic mobs.
+  mythic-mobs-custom-name: true
+
+  # A list of entities that should keep the lowest health when stacking.
+  # EntityType list: https://bg-software.com/entities/
+  # SpawnReason list: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/event/entity/CreatureSpawnEvent.SpawnReason.html
+  # You can combine filters using "ENTITY_TYPE:SPAWN_REASON"
+  keep-lowest-health: []
+
+  # When enabled, parents of the entity will get stacked together after breeding.
+  stack-after-breed: true
+
+  # When smart-breed is enabled, players will be consumed with two items in order to breed a stack.
+  # No breeding animation will be played, and a new baby stack will be spawned with the correct amount.
+  # This can prevent massive splits of the stack for breeding, and can help with performance.
+  smart-breeding: false
+
+  # When enabled, entities' names will be shown only if player looks exactly towards them.
+  hide-names: false
+
+  # Should players be able to disable entity names for themselves?
+  # In order to work, ProtocolLib should be installed.
+  names-toggle:
+    # Can entity names be toggled?
+    enabled: false
+
+    # What the toggle command will be?
+    command: stacker names entity
+
+  # Should entities get knockback after they are killed?
+  next-stack-knockback: true
+
+  # The default amount entities should get unstacked by.
+  # Use the "ENTITY_TYPE:AMOUNT" or "ENTITY_TYPE:SPAWN_CAUSE:AMOUNT"
+  default-unstack:
+    all: 1
+
+  # Should exp get added directly to killer instead of dropped to ground?
+  # EntityType list: https://bg-software.com/entities/
+  # SpawnReason list: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/event/entity/CreatureSpawnEvent.SpawnReason.html
+  # You can combine both filters using "ENTITY_TYPE:SPAWN_REASON"
+  auto-exp-pickup: []
+
+  # Set a custom exp sound when auto-exp-pickup is enabled.
+  # You can set this to '' if you want to disable it.
+  exp-pickup-sound: ENTITY_EXPERIENCE_ORB_PICKUP
+
+  # Should eggs that are laid by stacked chickens be multiplied by it's stack size?
+  egg-lay-multiply: true
+
+  # Should scout that are dropped by grown turtles by multiplied by it's stack size?
+  scute-multiply: true
+
+  # Should vanilla equipment of entities get cleared after they unstack?
+  clear-equipment: false
+
+  # Should corpses be spawned when entity dies ("death animations")?
+  spawn-corpses: true
+
+  # When enabled, entities will be one shot by specific tools.
+  one-shot:
+    # Should this feature be enabled?
+    enabled: false
+    # A list of tools that can one shot entities.
+    tools:
+    - DIAMOND_SWORD
+    - DIAMOND_AXE
+    # A list of entities that will be one shot.
+    # EntityType list: https://bg-software.com/entities/
+    # SpawnReason list: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/event/entity/CreatureSpawnEvent.SpawnReason.html
+    # You can combine both filters using "ENTITY_TYPE:SPAWN_REASON"
+    whitelist:
+    - ALL
+
+  # Should entities get stored into the database?
+  store-entities: true
+
+  # Should WildStacker add a custom entities-stacking setting to SuperiorSkyblock?
+  # When enabling, make sure you add "entities_stacking" section to the settings menu.
+  superiorskyblock-hook: false
+
+  # Should drops get calculated in relation to the amount of mobs that died?
+  multiply-drops: true
+
+  # Should exp get calculated in relation to the amount of mobs that died?
+  multiply-exp: true
+
+  # Should damage be spread to the next stack?
+  # If you deal more damage than the health of the entity, the rest of the damage will be dealt to the next stack.
+  spread-damage: false
+
+# Here you can configurable all features related to stacked spawners.
+spawners:
+  # Should spawners get stacked on the server?
+  enabled: true
+
+  # How many blocks from the spawner should be checked for other spawners to stack into?
+  # EntityType list: https://bg-software.com/entities/
+  merge-radius:
+    all: 1
+
+  # Custom hologram for the spawners.
+  # Holograms will be displayed only if one of the following plugins is enabled: HolographicDisplay, Holograms, Arconix
+  # If you don't want a hologram, use "custom-name: ''"
+  # {0} represents stack amount
+  # {1} represents entity type
+  # {2} represents entity type in upper case
+  # {3} represents the upgrade's display name
+  custom-name: '&6x{0} &f&o{1}'
+
+  # Blacklisted spawners are spawners that won't get stacked.
+  # EntityType list: https://bg-software.com/entities/
+  # If you wish to disable blacklisted spawners, use "blacklist: []"
+  blacklist: []
+
+  # Whitelisted spawners are spawners that will get stacked.
+  # EntityType list: https://bg-software.com/entities/
+  # If you wish to disable whitelisted spawners, use "whitelist: []"
+  whitelist: []
+
+  # Set a maximum stack for specific spawners.
+  # Make sure you follow the "ENTITY-TYPE" format.
+  # You can use 'all' as a global limit (all: 20 will set all spawners to be limited to 20 per stack)
+  # If you don't want any limits, you can set a random type.
+  limits:
+    EXAMPLE_ENTITY: 10
+
+  # A list of worlds spawners won't get stacked inside them (case-sensitive)
+  disabled-worlds:
+  - disabled_world
+
+  # Set a maximum amount of spawner objects in a chunk.
+  # If you want to disable the feature, set it to 0.
+  chunk-limit: 10
+
+  # Should the chunk limit be per spawner or not?
+  per-spawner-limit: false
+
+  # Should particles be spawned when an entity gets stacked?
+  # If you want to edit the particles, check the particles file.
+  particles: true
+
+  # When enabled, the plugin will try to find a spawner in the whole chunk instead
+  # of only in the provided radius. merge-radius will be overridden, and will be used
+  # as a y-level range only.
+  chunk-merge: false
+
+  # All settings related to the spawner items.
+  spawner-item:
+    # Custom name for the item.
+    # If you don't want a custom name, use "custom-name: ''"
+    # {0} represents stack amount
+    # {1} represents entity type
+    # {2} represents the upgrade's display name
+    name: '&6x{0} &f&o{1} Spawners'
+
+    # Custom lore for the item.
+    # If you don't want a custom lore, use "custom-lore: []"
+    # {0} represents stack amount
+    # {1} represents entity type
+    lore: []
+
+  # Here you can configurable all features related to silk-touch enchantment.
+  # Other spawner plugins, such as SilkSpawners and MineableSpawners, will override this section.
+  silk-touch:
+    # Should spawners get dropped when mining them using a silk-touch pickaxe?
+    enabled: true
+
+    # Should the spawner item go straight into the player's inventory instead of dropping on ground?
+    drop-to-inventory: false
+
+    # A list of worlds that silk touch will work in.
+    # If you want silk touch to work inside all the worlds, use "worlds: []"
+    worlds:
+    - core_world
+    - world_nether
+    - world_the_end
+    - Resource
+    - testworld
+    - resource_world
+
+    # Should spawners get dropped without silktouch?
+    # If enabled, only players with wildstacker.nosilkdrop will be able to get the spawners.
+    drop-without-silk: false
+
+    # Chance of spawners to be dropped after break of silk touch.
+    break-chance: 100
+
+    # The minimum required level for silk touch.
+    minimum-level: 1
+
+  # Here you can configurable all features related to exploded spawners.
+  # Other spawner plugins, such as SilkSpawners, will override this section.
+  explosions:
+    # Should spawners get dropped when exploded by TNT or Creepers?
+    enabled: true
+
+    # Should the spawner item go straight into the player's inventory instead of dropping on ground?
+    drop-to-inventory: false
+
+    # A list of worlds that explosions will work in.
+    # If you want explosions to work inside all the worlds, use "worlds: []"
+    worlds:
+    - core_world
+    - world_nether
+    - world_the_end
+    - resource_world
+    - testworld
+
+    # Chance of spawners to be dropped after exploded.
+    break-chance: 100
+
+  # Set the percentage amount that will be unstacked from explosions.
+  # You can set this value to -1 and only one spawner will be broken everytime.
+  explosions-break-percentage: 100
+
+  # The minimum amount of spawners that will be unstacked.
+  # It's used to fix small amounts of spawners not being unstacked by explosions when having
+  # `explosions-break-percentage` below 100.
+  explosions-break-minimum: 1
+
+  # Set the percentage amount that will be dropped from explosions.
+  explosions-amount-percentage: 100
+
+  # The minimum amount of spawners that will be dropped.
+  # It's used to fix small amounts of spawners not being dropped by explosions when having
+  # `explosions-amount-percentage` below 100.
+  explosions-amount-minimum: 1
+
+  # Should silk touch must be required to mine spawners?
+  mine-require-silk: false
+
+  # Should sneaking while mining break the entire stack instead of reducing it by one?
+  shift-get-whole-stack: true
+
+  # Should one item be dropped for a stacked spawner instead of multiple items?
+  # This feature will not work with other spawner-providers, such as SilkSpawners
+  drop-stacked-item: true
+
+  # When enabled, holograms will only be displayed when clicking on spawners.
+  # They will be displayed for 3 seconds.
+  # You must set a valid custom-name for it to work.
+  floating-names: false
+
+  # When enabled, you must have the permission wildstacker.place.<entity> to place an entity.
+  # You can give a player the ability to place all spawners with wildstacker.place.*
+  placement-permission: false
+
+  # When enabled and player is placing a spawner while sneaking, all of the spawners the player
+  # is holding will be placed instead of only 1.
+  shift-place-stack: true
+
+  # All settings related to break charge.
+  # break-charge:
+  #   EXAMPLE_MOB:                     The name of the mob.
+  #     price: 0                       The price to charge upon breaking.
+  #     multiply-stack-amount: false   Should the price get multiplied by the amount that were broken?
+  break-charge:
+    EXAMPLE_MOB:
+      price: 0
+      multiply-stack-amount: false
+
+  # All settings related to break charge.
+  # place-charge:
+  #   EXAMPLE_MOB:                     The name of the mob.
+  #     price: 0                       The price to charge upon placing.
+  #     multiply-stack-amount: false   Should the price get multiplied by the amount that were placed?
+  place-charge:
+    EXAMPLE_MOB:
+      price: 0
+      multiply-stack-amount: false
+
+  # When enabled, players will be able to change spawners by clicking them with spawn eggs.
+  change-using-eggs: false
+
+  # When enabled and change-using-eggs is enabled, the amount of eggs that will be required to change
+  # a spawner would be the same as the stack size of the spawner.
+  eggs-stack-multiply: false
+
+  # Should there be the ability to place spawners next to each other?
+  next-spawner-placement: true
+
+  # Should there be only one spawner in the merge radius?
+  only-one-spawner: true
+
+  # All settings related to the inventory tweaks.
+  # For example, right clicking a stacked item will split it into two stack in the inventory.
+  inventory-tweaks:
+    # Should there be inventory tweaks for spawner items?
+    enabled: true
+    # Set a permission to use the inventory tweaks.
+    # You can set it to be empty in order to disable the feature.
+    permission: ''
+    # Set a command for a toggle mode for the inventory teaks.
+    # You can split multiple commands using ",".
+    # You can set it to be disabled in order to disable the feature.
+    toggle-command: stacker inventorytweaks,stacker it
+
+  # Settings related to the manage menu of spawners.
+  # If all the sub menus are disabled, the manage menu will not be opened.
+  manage-menu:
+    # Should the amounts menu be enabled?
+    amounts-menu: false
+
+  # Settings related to overriding spawners.
+  spawners-override:
+    # Should spawners behavior be overridden by WildStacker?
+    # When enabled, you should see better performance from spawners.
+    enabled: true
+    # Configure spawn conditions for entities that are spawned by spawners
+    # You can find more information regarding this by visiting the official wiki:
+    # https://wiki.bg-software.com/#/wildstacker/spawn-conditions/
+    spawn-conditions:
+      EXAMPLE_MOB: []
+
+  # All settings related to spawner upgrades.
+  spawner-upgrades:
+    # Should the cost to upgrade be multiplied by the stack amount of the spawner?
+    multiply-stack-amount: true
+    # Upgrade ladders
+    ladders:
+      '1':
+        entities:
+        - EXAMPLE_MOB
+        default:
+          next-upgrade: coal
+          nearby-players: 16
+          icon:
+            type: STONE
+            name: '&fBasic'
+            lore:
+            - '&fThis upgrade is free of charge'
+            - '&7 '
+            - '&7Spawn Delay Range&f: %min-spawn-delay%-%max-spawn-delay%'
+            - '&7Spawn Count&f: %spawn-count%'
+            - '&7Max Nearby Entities&f: %max-nearby-entities%'
+            - '&7Required Player Range&f: %required-player-range%'
+            - '&7Spawn Range&f: %spawn-range%'
+        coal:
+          id: 1
+          next-upgrade: iron
+          display: '&7 (&8Coal&7)'
+          cost: 10000
+          icon:
+            type: COAL
+            name: '&8Coal'
+            lore:
+            - '&8This upgrade costs $%cost%'
+            - '&7 '
+            - '&7Spawn Delay Range&f: &8%min-spawn-delay%-%max-spawn-delay%'
+            - '&7Spawn Count&f: &8%spawn-count%'
+            - '&7Max Nearby Entities&f: &8%max-nearby-entities%'
+            - '&7Required Player Range&f: &8%required-player-range%'
+            - '&7Spawn Range&f: &8%spawn-range%'
+        iron:
+          id: 2
+          next-upgrade: gold
+          display: '&7 (Iron)'
+          cost: 25000
+          icon:
+            type: IRON_INGOT
+            name: '&7Iron'
+            lore:
+            - '&7This upgrade costs $%cost%'
+            - '&7 '
+            - '&7Spawn Delay Range&f: &7%min-spawn-delay%-%max-spawn-delay%'
+            - '&7Spawn Count&f: &7%spawn-count%'
+            - '&7Max Nearby Entities&f: &7%max-nearby-entities%'
+            - '&7Required Player Range&f: &7%required-player-range%'
+            - '&7Spawn Range&f: &7%spawn-range%'
+        gold:
+          id: 3
+          next-upgrade: diamond
+          display: '&7 (&6Gold&7)'
+          cost: 75000
+          icon:
+            type: GOLD_INGOT
+            name: '&6Gold'
+            lore:
+            - '&6This upgrade costs $%cost%'
+            - '&7 '
+            - '&7Spawn Delay Range&f: &6%min-spawn-delay%-%max-spawn-delay%'
+            - '&7Spawn Count&f: &6%spawn-count%'
+            - '&7Max Nearby Entities&f: &6%max-nearby-entities%'
+            - '&7Required Player Range&f: &6%required-player-range%'
+            - '&7Spawn Range&f: &6%spawn-range%'
+        diamond:
+          id: 4
+          display: '&7 (&bDiamond&7)'
+          cost: 120000
+          icon:
+            type: DIAMOND
+            name: '&bDiamond'
+            lore:
+            - '&bThis upgrade costs $%cost%'
+            - '&7 '
+            - '&7Spawn Delay Range&f: &b%min-spawn-delay%-%max-spawn-delay%'
+            - '&7Spawn Count&f: &b%spawn-count%'
+            - '&7Max Nearby Entities&f: &b%max-nearby-entities%'
+            - '&7Required Player Range&f: &b%required-player-range%'
+            - '&7Spawn Range&f: &b%spawn-range%'
+
+# Here you can configurable all features related to stacked barrels (aka stacked blocks).
+barrels:
+  # Should blocks get stacked into barrels on the server?
   enabled: false
-  max: 1000
-  check-interval: 60
-  broadcast-message: '&6[ClearLag] &aLimit reached, removed +RemoveAmount Entities!'
-  world-filter:
-  # - this_world <-This world will be ignored during removal!
-  broadcast-removal: true
-  boat: true
-  falling-block: true
-  experience-orb: true
-  painting: false
-  projectile: true
-  item: true
-  itemframe: false
-  minecart: true
-  primed-tnt: true
-  item-filter:
-  # - Stone
-  # - Grass <-This item-id will be ignored during removal!
 
+  # How many blocks from the barrel should be checked for other blocks to stack into?
+  # Material list: https://bg-software.com/materials/
+  # Make sure you follow the "TYPE" and "TYPE:DATA" formats.
+  merge-radius:
+    all: 1
 
-# Create your own custom removal stuff!
-# -- warnings works like this; time = the time warning should be given, msg = warning message at that time
-# -- NOTE: The below 'remove' section applies to this remover!
-# \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/ \/
-# >    READ FOR HELP -> https://dev.bukkit.org/projects/clearlagg/pages/config-setup <- READ FOR HELP    <
-# /\ /\ /\ /\ /\ /\ /\ /\ /\ /\ /\ /\ /\ /\ /\ /\ /\ /\ /\ /\ /\ /\ /\ /\ /\ /\ /\ /\ /\ /\ /\ /\ /\ /\ /\
-custom-trigger-removal:
-  enabled: false
-  triggers:
-    trigger1:
-      trigger-type: tps-trigger
-      run-interval: 5
-      tps-trigger: 14.0
-      tps-recover: 19.0
-      jobs:
-        command-executor:
-          commands:
-            - 'lagg killmobs'
-            - 'lagg clear'
-            - 'lagg halt'
-          recover-commands:
-            - 'lagg halt'
-        entity-clearer:
-          execute-job-time: 120
-          warnings:
-            - 'time:60 msg:&4[ClearLag] &cEntities/drops will be purged in &7+remaining &cseconds!'
-            - 'time:100 msg:&4[ClearLag] &cEntities/drops will be purged in &720 &cseconds!'
-            - 'time:110 msg:&4[ClearLag] &cEntities/drops will be purged in &710 &cseconds!'
-          world-filter:
-          # - world <-This world will be ignored during removal
-          removeEntities:
-            - item
-            - zombie !hasName
-            - skeleton !hasName
-            - pig !hasName
-            - cow !hasName
-    trigger2:
-      trigger-type: entity-limit-trigger
-      run-interval: 25
-      limit: 200
-      world-filter:
-        # - world <-This world will be ignored during checking
-      entity-limits:
-        - zombie
-        - skeleton
-        - enderman
-      jobs:
-        entity-clearer:
-          world-filter:
-          # - world <-This world will be ignored during removal
-          remove-entities:
-            - zombie
-            - skeleton
-            - enderman
+  # Custom hologram for the barrels.
+  # Holograms will be displayed only if one of the following plugins is enabled: HolographicDisplay, Holograms, Arconix
+  # If you don't want a hologram, use "custom-name: ''"
+  # {0} represents stack amount
+  # {1} represents barrel type
+  # {2} represents barrel type in upper case
+  custom-name: '&6x{0} &f&o{1}'
+
+  # Blacklisted barrels are barrels that won't get stacked.
+  # Material list: https://bg-software.com/materials/
+  # Make sure you follow the "TYPE" and "TYPE:DATA" formats.
+  # If you wish to disable blacklisted barrels, use "blacklist: []"
+  blacklist: []
+
+  # Whitelisted blocks are blocks that will get stacked.
+  # Material list: https://bg-software.com/materials/
+  # Make sure you follow the "TYPE" and "TYPE:DATA" formats.
+  # If you wish to disable whitelisted barrels, use "whitelist: []"
+  whitelist:
+  - EXAMPLE_BARREL
+
+  # Set a maximum stack for a specific barrel.
+  # Make sure you follow the "TYPE" and "TYPE:DATA" formats.
+  # You can use 'all' as a global limit (all: 20 will set all barrels to be limited to 20 per stack)
+  # If you don't want any limits, you can set a random type.
+  limits:
+    EXAMPLE_BARREL: 100
+
+  # A list of worlds barrels won't get stacked inside them (case-sensitive)
+  disabled-worlds:
+  - disabled_world
+
+  # Set a maximum amount of barrel objects in a chunk.
+  # If you want to disable the feature, set it to 0.
+  chunk-limit: 0
+
+  # Should particles be spawned when an entity gets stacked?
+  # If you want to edit the particles, check the particles file.
+  particles: true
+
+  # When enabled, the plugin will try to find a block in the whole chunk instead
+  # of only in the provided radius. merge-radius will be overridden, and will be used
+  # as a y-level range only.
+  chunk-merge: false
+
+  # Should explosions break the entire stack, or just reducing it by one?
+  explosions-break-stack: true
+
+  # Here you can configurable all features related to toggle commands.
+  toggle-command:
+    # Should toggle-commands be enabled?
+    enabled: false
+
+    # What the toggle command will be?
+    command: stacker toggle
+
+  # When enabled and player is clicking a barrel while sneaking, an inventory will be opened, there
+  # he can put blocks to add to the barrel.
+  place-inventory:
+    enabled: true
+    title: Add items here ({0})
+
+  # This should not be set to true unless being told by the dev.
+  # When enabled, the plugin sets the barrel types to cauldron if they aren't already.
+  force-cauldron: false
+
+  # Set a required permission for barrels.
+  # If you want to disable it, use "required-permission: ''"
+  required-permission: ''
+
+  # Should items from barrels get added directed into the player's inventory?
+  auto-pickup: false
+
+  # Should a stacked item be dropped when a barrel is broken?
+  drop-stacked-item: false
+
+  # When enabled and player is placing a barrel while sneaking, all of the barrel the player
+  # is holding will be placed instead of only 1.
+  shift-place-stack: false
+
+# Here you can configurable all features related to stacked buckets
+buckets:
+  # Should buckets get stacked on the server?
+  enabled: true
+
+  # A list of blacklisted bucket names.
+  name-blacklist:
+  - '&fGenbucket'
+
+  # The new max-stack size for buckets. Must be a number between 1 and 64.
+  max-stack: 16
+
+# Here you can configurable all features related to stacked stews
+stews:
+  # Should stews get stacked on the server?
+  enabled: true
+
+  # The new max-stack size for stews. Must be a number between 1 and 64.
+  max-stack: 16
