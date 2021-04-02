@@ -39,9 +39,9 @@ kill-task:
   # If you wish to disable the auto-killing task, set the interval to 0.
   interval: 1200
   # Should the kill task remove stacked entities?
-  stacked-entities: true
+  stacked-entities: false
   # Should the kill task remove unstacked entities?
-  unstacked-entities: false
+  unstacked-entities: true
   # Should the kill task remove stacked items?
   stacked-items: true
   # Should the kill task remove unstacked items?
@@ -63,37 +63,37 @@ kill-task:
     # You can combine both filters using "ENTITY_TYPE:SPAWN_REASON"
     # If you wish to disable blacklisted entities, use "blacklist: []"
     blacklist:
-    - BOAT
-    - CAT
-    - DONKEY
-    - ENDER_DRAGON
-    - HORSE
-    - LLAMA
-    - MULE
-    - PARROT
-    - FOX
-    - OCELOT
-    - WOLF
-    - MINECART
-    - VILLAGER
-    - ARMOR_STAND
-    - SHULKER_BULLET
-    - SHULKER
-    - POLAR_BEAR
-    - ITEM_FRAME
-    - MINECART_FURNACE
-    - MINECART_TNT
-    - PAINTING
-    - IRON_GOLEM
-    - PILLAGER
-    - MINECART_CHEST
+      - ARMOR_STAND
+      - BOAT
+      - CAT
+      - DONKEY
+      - ENDER_DRAGON
+      - FOX
+      - HORSE
+      - IRON_GOLEM
+      - ITEM_FRAME
+      - LLAMA
+      - MINECART
+      - MINECART_CHEST
+      - MINECART_FURNACE
+      - MINECART_TNT
+      - MULE
+      - OCELOT
+      - PAINTING
+      - PARROT
+      - PILLAGER
+      - POLAR_BEAR
+      - SHULKER
+      - SHULKER_BULLET
+      - VILLAGER
+      - WOLF
     # A list of worlds that entities will be cleared inside.
     # If you want all worlds, set this to []
     worlds:
-    - world_nether
-    - world_the_end
-    - resource_world
-    - core_world
+      - world_nether
+      - world_the_end
+      - resource_world
+      - core_world
   # All settings related to the kill-all task of entities.
   kill-items:
     # A list of items that will be cleared.
@@ -131,41 +131,41 @@ items:
   # Make sure you follow the "TYPE" and "TYPE:DATA" formats.
   # If you wish to disable blacklisted items, use "blacklist: []"
   blacklist:
-  - CHAINMAIL_HELMET
-  - IRON_HELMET
-  - DIAMOND_HELMET
-  - GOLDEN_HELMET
-  - NETHERITE_HELMET
-  - TURTLE_HELMET
-  - BOW
-  - WOODEN_SWORD
-  - STONE_SWORD
-  - GOLDEN_SWORD
-  - IRON_SWORD
-  - DIAMOND_SWORD
-  - NETHERITE_SWORD
-  - LEATHER_HELMET
-  - LEATHER_CHESTPLATE
-  - LEATHER_LEGGINGS
-  - LEATHER_BOOTS
-  - CHAINMAIL_CHESTPLATE
-  - CHAINMAIL_LEGGINGS
-  - CHAINMAIL_BOOTS
-  - IRON_CHESTPLATE
-  - IRON_LEGGINGS
-  - IRON_BOOTS
-  - DIAMOND_CHESTPLATE
-  - DIAMOND_LEGGINGS
-  - DIAMOND_BOOTS
-  - GOLDEN_CHESTPLATE
-  - GOLDEN_LEGGINGS
-  - GOLDEN_BOOTS
-  - NETHERITE_CHESTPLATE
-  - NETHERITE_LEGGINGS
-  - NETHERITE_BOOTS
-  - TRIDENT
-  - CROSSBOW
-  - TOTEM_OF_UNDYING
+    - CHAINMAIL_HELMET
+    - IRON_HELMET
+    - DIAMOND_HELMET
+    - GOLDEN_HELMET
+    - NETHERITE_HELMET
+    - TURTLE_HELMET
+    - BOW
+    - WOODEN_SWORD
+    - STONE_SWORD
+    - GOLDEN_SWORD
+    - IRON_SWORD
+    - DIAMOND_SWORD
+    - NETHERITE_SWORD
+    - LEATHER_HELMET
+    - LEATHER_CHESTPLATE
+    - LEATHER_LEGGINGS
+    - LEATHER_BOOTS
+    - CHAINMAIL_CHESTPLATE
+    - CHAINMAIL_LEGGINGS
+    - CHAINMAIL_BOOTS
+    - IRON_CHESTPLATE
+    - IRON_LEGGINGS
+    - IRON_BOOTS
+    - DIAMOND_CHESTPLATE
+    - DIAMOND_LEGGINGS
+    - DIAMOND_BOOTS
+    - GOLDEN_CHESTPLATE
+    - GOLDEN_LEGGINGS
+    - GOLDEN_BOOTS
+    - NETHERITE_CHESTPLATE
+    - NETHERITE_LEGGINGS
+    - NETHERITE_BOOTS
+    - TRIDENT
+    - CROSSBOW
+    - TOTEM_OF_UNDYING
 
   # Whitelisted items are items that will get stacked.
   # Material list: https://bg-software.com/materials/
@@ -202,7 +202,7 @@ items:
 
   # When item-display is enabled, the item's name will be displayed instead of it's type
   # This will take place on all items, and can only be overridden by custom-display section.
-  item-display: false
+  item-display: true
 
   # Should players be able to disable item names for themselves?
   # In order to work, ProtocolLib should be installed.
@@ -261,20 +261,20 @@ entities:
   # You can combine both filters using "ENTITY_TYPE:SPAWN_REASON"
   # If you wish to disable blacklisted entities, use "blacklist: []"
   blacklist:
-  - CAT
-  - DONKEY
-  - ENDER_DRAGON
-  - HORSE
-  - LLAMA
-  - MULE
-  - PARROT
-  - FOX
-  - OCELOT
-  - WOLF
-  - RABBIT
-  - VILLAGER
-  - BEE
-  - ZOMBIE_VILLAGER
+    - BEE
+    - CAT
+    - DONKEY
+    - ENDER_DRAGON
+    - FOX
+    - HORSE
+    - LLAMA
+    - MULE
+    - OCELOT
+    - PARROT
+    - RABBIT
+    - VILLAGER
+    - WOLF
+    - ZOMBIE_VILLAGER
 
   # Whitelisted entities are entities that will get stacked.
   # EntityType list: https://bg-software.com/entities/
@@ -319,7 +319,7 @@ entities:
 
   # How much time should be passed between auto-stacking? (in ticks)
   # If you wish to disable the auto-stacking task, set the stack-interval to 0.
-  stack-interval: 0
+  stack-interval: 400
 
   # A list of all checks that the plugin does before trying to stack two entities together.
   stack-checks:
@@ -399,7 +399,6 @@ entities:
   # If you don't want instant-kill, use "instant-kill: []"
   instant-kill: 
     - CONTACT
-    - ENTITY_ATTACK
     - LAVA
     - FIRE_TICK
     - FIRE
@@ -430,8 +429,8 @@ entities:
     # A list of entities that will be forced to only stack down.
     # You can combine filters using "ENTITY_TYPE:SPAWN_REASON"
     stack-down-types:
-    - BLAZE
-    - GHAST
+      - BLAZE
+      - GHAST
 
   # If a stacked entity dies from fire, should the fire continue to the next entity?
   keep-fire: true
@@ -501,14 +500,14 @@ entities:
     enabled: false
     # A list of tools that can one shot entities.
     tools:
-    - DIAMOND_SWORD
-    - DIAMOND_AXE
+      - DIAMOND_SWORD
+      - DIAMOND_AXE
     # A list of entities that will be one shot.
     # EntityType list: https://bg-software.com/entities/
     # SpawnReason list: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/event/entity/CreatureSpawnEvent.SpawnReason.html
     # You can combine both filters using "ENTITY_TYPE:SPAWN_REASON"
     whitelist:
-    - ALL
+      - ALL
 
   # Should entities get stored into the database?
   store-entities: true
@@ -525,7 +524,7 @@ entities:
 
   # Should damage be spread to the next stack?
   # If you deal more damage than the health of the entity, the rest of the damage will be dealt to the next stack.
-  spread-damage: false
+  spread-damage: true
 
 # Here you can configurable all features related to stacked spawners.
 spawners:
