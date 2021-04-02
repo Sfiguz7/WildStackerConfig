@@ -131,6 +131,7 @@ items:
   # Make sure you follow the "TYPE" and "TYPE:DATA" formats.
   # If you wish to disable blacklisted items, use "blacklist: []"
   blacklist:
+    - POTION
     - CHAINMAIL_HELMET
     - IRON_HELMET
     - DIAMOND_HELMET
