@@ -272,6 +272,7 @@ entities:
     - OCELOT
     - PARROT
     - RABBIT
+    - SILVERFISH
     - VILLAGER
     - WOLF
     - ZOMBIE_VILLAGER
